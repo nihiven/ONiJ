@@ -103,7 +103,7 @@ end
 
 
 -------------------------  room related functions
--- print info about the current room
+-- print info about the current rooms
 function printRoomInfo()
 	if (location == nil) then return end
 
