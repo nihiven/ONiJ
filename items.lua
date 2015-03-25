@@ -13,7 +13,7 @@ iPhone =
 }
 
 function iPhone.use(_data)
-	if (#numbers == 0) then
+	if (#iPhone.numbers == 0) then
 		addMessage({text = "You don't have anyone's number."})
 	end
 end
@@ -44,10 +44,12 @@ iWallet =
 }
 
 function iWallet.open(_data)
-	if (#contents == 0) then
+	if (#iWallet.contents == 0) then
 		addMessage({text = "Your wallet is empty."})
 	else
-		addMessage({text = "It's like a filing cabinet under half of your ass."})
+		addMessage({text = "There's a debit card in here."})
+		addToInventory(iWallet.contents[1])
+		table.remove(iWallet.contents, 1)
 	end
 end
 

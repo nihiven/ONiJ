@@ -14,12 +14,10 @@ locations = {} -- all of the places you can go
 location = nil -- you current location
 
 
---[[ ------------------------- UI Variables ------------------------- ]]--
-items_show = false
-items_selected = 1
-
-
 --[[ ------------------------- Libraries ------------------------- ]]--
+-- support libraries
+require "colors"
+
 -- load global items
 require "items"
 items = item_list
@@ -27,6 +25,21 @@ items = item_list
 -- load the different locations
 require "feria"
 locations["feria"] = feria.getLocation()
+
+
+--[[ ------------------------- UI Variables ------------------------- ]]--
+-- inventory
+inventoryShow = false
+items_selected = 1
+inventoryX = 600
+inventoryY = 10
+inventoryNormal = colorsRGB["white"]
+inventorySelected = colorsRGB["red"]
+
+-- messages
+messageSysColor = colorsRGB["red"]
+messagesRoomColor = colorsRGB["white"]
+messagesPeopleColor = colorsRGB["lime"]
 
 
 --[[ ------------------------- Love Callbacks ------------------------- ]]--
@@ -52,8 +65,8 @@ function love.load()
 	-- load intial messages
 	-- defined in reverse because earlier messages reference later ones
 	local intro3 = { text = "Let's dance...",				age = 12, callback = { func = "setLocation",	data = "feria" } }
-	local intro2 = { text = "You can do anything.",			age = 12, callback = { func = "addMessage",	data = intro3 } }
-	local intro1 = { text = "You have one night in Japan.",	age = 12, callback = { func = "addMessage",	data = intro2 } }
+	local intro2 = { text = "You can do anything.",			age = 12, callback = { func = "addMessage",		data = intro3 } }
+	local intro1 = { text = "You have one night in Japan.",	age = 12, callback = { func = "addMessage",		data = intro2 } }
 	
 	addMessage(intro1)
 end
@@ -68,10 +81,12 @@ function love.keypressed(key)
 	elseif key == "up" or key == "down" or key == "left" or key == "right" then
 		processMovement(key)
 	elseif key == "backspace" then
-		items_show = not items_show
+		inventoryShow = not inventoryShow
 	elseif key == "w" or key == "s" then
 		navigateInventory(key)
-   end
+	elseif key == "l" or key == "u" or key == "o" then
+		actionItem(key)
+	end
 end
 
 
@@ -84,16 +99,18 @@ end
 
 
 ------------------------- message related functions
--- print the message queue
+-- print and age the first message in the queue
+-- once age is 0, the message is removed
 function printMessages()
 	if (#messages == 0) then return end
 
 	local m = messages[1]
-	love.graphics.setColor(200, 0, 0, 255)
+	love.graphics.setColor(messageSysColor)
 	--love.graphics.printf(m["text"] .. " (" .. m["age"] .. ")", 25, 540, 580, "left")
 	love.graphics.printf(m["text"], 20, (love.graphics.getHeight()-120), 600, "left")
 
 	if (m["age"] <= 0) then
+
 		-- if the message has a callback, execute it
 		if (m["callback"] ~= nil) then
 			runCallback(m["callback"]["func"], m["callback"]["data"])
@@ -108,6 +125,10 @@ end
 
 -- add the passed message to the message queue
 function addMessage(_data)
+	if (_data["age"] == nil) then
+		_data["age"] = 120
+	end
+
 	table.insert(messages, _data)
 end
 
@@ -120,10 +141,10 @@ function printRoomInfo()
 	local r = getRoom()
 	local rs = getRooms()
 
-	love.graphics.setColor(0, 255, 0, 255)
+	love.graphics.setColor(messagesRoomColor)
 	love.graphics.print("Room: " .. r["name"], 10, 10)
 
-	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setColor(messagesRoomColor)
 	-- print movement options
 	local m = {}
 	if (r["forward"] ~= nil) then table.insert(m,"Up: " .. rs[r["forward"]]["name"]) end 
@@ -143,7 +164,7 @@ function printPeople()
 	local p = getPeople()
 	if (p == nil) then return end
 
-	love.graphics.setColor(0, 200, 0, 255)
+	love.graphics.setColor(messagesPeopleColor)
 	love.graphics.print("People", 10, 110)
 
 	local i = 1
@@ -179,23 +200,23 @@ function enterRoom(_room)
 
 	-- if this is the players first time in the room, show the intro text
 	if (r["fresh"] == true) then
-		addMessage({ text = r["messages"]["enter"], age = 360 })
+		addMessage({ text = r["messages"]["enter"] })
 		locations[location]["rooms"][_room]["fresh"] = false
 	end
 end
 
 function setLocation(_location)
 	location = _location
-	addMessage({ text = locations[location]["messages"]["enter"], age = 360 })
+	addMessage({ text = locations[location]["messages"]["enter"] })
 	enterRoom(locations[location]["room"])
 end
 
 -------------------------  item related functions
 function printInventory()
-	love.graphics.setColor(255, 255, 0, 255)
+	love.graphics.setColor(inventoryNormal)
 
-	if (items_show == true) then
-		love.graphics.print("Inventory", love.graphics.getWidth() - 160, 100)
+	if (inventoryShow == true) then
+		love.graphics.print("Inventory", inventoryX - 10, inventoryY)
 
 		-- submenu y axis offset
 		local i = 0
@@ -205,32 +226,33 @@ function printInventory()
 			if (key == items_selected) then
 
 				-- if this is the selected item use a special color
-				love.graphics.setColor(255, 0, 0, 255)
-				love.graphics.print(": " .. value["name"], love.graphics.getWidth() - 150, 100 + (key * 20))
+				love.graphics.setColor(inventorySelected)
+				love.graphics.print(": " .. value["name"], inventoryX, inventoryY + (key * 20))
 
 				-- intit y axis offset
 				i = 0
 				-- list actions for this item
 				for action,available in pairs(value['actions']) do
 					if (available == true) then
-						love.graphics.print(" : " .. action, love.graphics.getWidth() - 150, 100 + (key * 20) + (i * 20) + 20)
+						love.graphics.print(" : " .. action, inventoryX, inventoryY + (key * 20) + (i * 20) + 20)
 						i = i+1
 					end
 				end
 			else
 				-- this item isn't select, use the normal color
-				love.graphics.setColor(255, 255, 0, 255)
-				love.graphics.print(": " .. value["name"], love.graphics.getWidth() - 150, 100 + (key * 20) + (i * 20))
+				love.graphics.setColor(inventoryNormal)
+				love.graphics.print(": " .. value["name"], inventoryX, inventoryY + (key * 20) + (i * 20))
 			end
 			
 		end
 	else
-		love.graphics.print("Inventory" .. " (" .. #items .. ")", love.graphics.getWidth() - 160, 100)
+		love.graphics.print("Inventory" .. " (" .. #items .. ")", inventoryX - 10, inventoryY)
 	end
 end
 
+-- change selected item in your inventory
 function navigateInventory(_key)
-	if (items_show == true) then
+	if (inventoryShow == true) then
 		if (_key == "w") then
 			items_selected = items_selected - 1
 			if (items_selected == 0) then items_selected = #items end
@@ -241,6 +263,38 @@ function navigateInventory(_key)
 		end
 	end
 end
+
+function addToInventory(_item)
+	addMessage({text = "Added " .. _item["name"] .. " to your inventory."})
+	table.insert(items, _item)
+end
+
+-- perform given action on currently selected item in your inventory
+function actionItem(_key)
+	local item = items[items_selected] -- reference to the selected item instance
+	local action = actionMapping(_key) -- action to be used for the item callback
+
+	if (action ~= nil) then
+		item[action]()	-- execute the [item].[action] function
+	end
+end
+
+-- future key mapping?
+function actionMapping(_key)
+	local r
+	if (_key == "u") then
+		r = "use"
+	elseif (_key == "l") then
+		r = "look"
+	elseif (_key == "o") then
+		r = "open"
+	else
+		r = nil
+	end
+
+	return r
+end
+
 
 ------------- HELPERS
 
