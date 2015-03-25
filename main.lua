@@ -45,16 +45,15 @@ function love.load()
 
 	-- load intial messages
 	-- defined in reverse because earlier messages reference later ones
-	local intro3 = { text = "Let's dance...",				age = 12, callback = { func = "setLocation",	data = "feria" } }
-	local intro2 = { text = "You can do anything.",			age = 12, callback = { func = "addMessage",		data = intro3 } }
-	local intro1 = { text = "You have one night in Japan.",	age = 12, callback = { func = "addMessage",		data = intro2 } }
+	local intro3 = { text = "Let's dance...",				age = 120, callback = { func = "setLocation",	data = "feria" } }
+	local intro2 = { text = "You can do anything.",			age = 120, callback = { func = "addMessage",		data = intro3 } }
+	local intro1 = { text = "You have one night in Japan.",	age = 120, callback = { func = "addMessage",		data = intro2 } }
 	
 	addMessage(intro1)
 end
 
 -- called continusously
 function love.update(dt)  -- dt is delta time
-	ageMessages(dt)
 end
 
 function love.keypressed(key)
@@ -77,31 +76,24 @@ end
 ------------------------- message related functions
 -- print the message queue
 function printMessages()
-	for key,value in pairs(messages) do
-		love.graphics.setColor(200, 0, 0, 255)
-		--love.graphics.printf(value["text"] .. " (" .. value["age"] .. ")", 25, 540 + (key * 20), 580, "left")
-		love.graphics.printf(value["text"], 25, (love.graphics.getHeight()-100) + (key * 20), 580, "left")
-	end
-end
+	if (#messages == 0) then return end
 
--- reduce the age of messages, remove them when 0
-function ageMessages(dt)
-	-- loop through all messages
-	for i = #messages,1,-1 do
-		local m = messages[i]
+	local m = messages[1]
+	love.graphics.setColor(200, 0, 0, 255)
+	--love.graphics.printf(m["text"] .. " (" .. m["age"] .. ")", 25, 540, 580, "left")
+	love.graphics.printf(m["text"], 20, (love.graphics.getHeight()-120), 600, "left")
 
-		-- has message aged out?
-		if (m["age"] <= 0) then
-			-- if the message has a callback, execute it
-			if (m["callback"] ~= nil) then
-				runCallback(m["callback"]["func"], m["callback"]["data"])
-			end
-
-			table.remove(messages, i)
-		else
-		    messages[i]["age"] = m["age"] - 1
+	if (m["age"] <= 0) then
+		-- if the message has a callback, execute it
+		if (m["callback"] ~= nil) then
+			runCallback(m["callback"]["func"], m["callback"]["data"])
 		end
+
+		table.remove(messages, 1)
+	else
+	    messages[1]["age"] = m["age"] - 1
 	end
+
 end
 
 -- add the passed message to the message queue

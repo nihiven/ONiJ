@@ -24,7 +24,7 @@ function feria.getLocation()
 		close = 3100, -- close time
 		messages = -- messages for location events
 		{
-			enter = "You enter Feria. Dance music plays as a swarm of people dance in rythm under the club's lights. Everyone seems to be having a good time. Most of the people in the club seem to be foreigners.",
+			enter = "You enter Feria. Dance music plays as a swarm of people move in rythm under the club's lights. Everyone seems to be having a good time.",
 			exit = "You're not sure when, but you feel as if you will return to Feria before long."
 		},
 		rooms = 

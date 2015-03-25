@@ -1,0 +1,267 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"message",
+				"messages"
+			],
+			[
+				"can",
+				"love.graphics.newCanvas"
+			],
+			[
+				"grap",
+				"love.graphics.draw"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "feria.lua",
+			"settings":
+			{
+				"buffer_size": 2532,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "main.lua",
+			"settings":
+			{
+				"buffer_size": 5221,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/User/nihiven.sublime-build",
+	"command_palette":
+	{
+		"height": 288.0,
+		"selected_items":
+		[
+			[
+				"git ad",
+				"Git: Add Current File"
+			],
+			[
+				"git",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": true,
+		"show_open_files": true,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/E/Google Drive/Code/Game Prototypes/love_test/main.lua",
+		"/E/Google Drive/Code/Game Prototypes/love_test/feria.lua",
+		"/E/Google Drive/Code/Game Prototypes/onij/onij.html",
+		"/E/Google Drive/Code/Game Prototypes/onij/Jaguar/css/onij.css",
+		"/C/Users/nihiven/Desktop/monkey_island.html",
+		"/E/Google Drive/Code/Game Prototypes/onij/audio_template.html",
+		"/E/Google Drive/Code/Game Prototypes/onij/Jaguar/css/jquery-Jaguar-3.2.css",
+		"/E/Google Drive/Code/Game Prototypes/onij/Jaguar/css/monkey_island.css",
+		"/E/Google Drive/Code/Game Prototypes/jaguar-engine/monkey_island.html",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/mainmenu.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/splash.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/main.lua",
+		"/C/Users/nihiven/Desktop/lua-libxml-master/docs/quick_start.md",
+		"/C/Users/nihiven/Desktop/lua-libxml-master/xml/init.lua",
+		"/C/Users/nihiven/Desktop/lua-libxml-master/README.md",
+		"/C/Users/nihiven/AppData/Roaming/Sublime Text 2/Packages/User/nihiven.sublime-build",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/fire.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/options.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/ingame.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/AnAL.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/map.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/maps/floors/1-1-1.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/config.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/TSerial.lua",
+		"/E/Google Drive/Code/Game Prototypes/mrrescue/resources.lua"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"jaguar",
+			"my",
+			"adventure",
+			"monkey",
+			"skin",
+			".css",
+			"start_sc",
+			"menu_key",
+			"debug_key",
+			"oni.",
+			"for",
+			"addMessage",
+			"people"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"addSystemMessage"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "feria.lua",
+					"settings":
+					{
+						"buffer_size": 2532,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "main.lua",
+					"settings":
+					{
+						"buffer_size": 5221,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 50.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}
