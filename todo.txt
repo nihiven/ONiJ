@@ -1,0 +1,13 @@
+change age message to use delta time
+use constants like line height
+no input until intro is complete or skipped
+moving between locations
+ - do we even need locations? rooms are good enough. rename them 'scenes' or something
+
+
+item usage
+ - [U]se
+ - [L]ook
+ - [O]pen
+
+ please please pick a naming convention

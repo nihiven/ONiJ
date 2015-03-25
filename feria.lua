@@ -1,16 +1,32 @@
 -- create the location feria
 feria = {}
 
-local couch =
-{
-	name = "Couch",
-	actions =
-	{
-		sit = function() return 2 end
-	}
+-- define our people
+pBecky = 
+{ 
+	name = "Becky",
+	age = 28,
+	sex = 'F',
+	opinion = 1,
+	intel = 1,
+	looks = 2,
+	personality = 1 
 }
 
+-- talk to becky
+-- gloria in excelsis deo
+function pBecky.talk()
+	
+end
 
+-- give something to becky
+function pBecky.receive(_item)
+	-- return true -- she takes it
+	-- return false -- she does not take it
+end
+
+
+-- define the location
 function feria.getLocation()
 	return 
 	{
@@ -41,11 +57,7 @@ function feria.getLocation()
 				{
 					"couch"
 				},
-				people = 
-				{ 
-					Becky = { age = 28, sex = 'F', opinion = 1, intel = 1, looks = 2, personality = 1 },
-					Zelda =	{ age = 43, sex = 'F', opinion = 1, intel = 0, looks = 1, personality = 1 }
-				}, -- a list of people in this room
+				people = { pBecky }, -- a list of people in this room
 				messages = -- messages for room events
 				{
 					enter = "The dance floor calls your name as you enter the main area of Feria."
@@ -59,10 +71,7 @@ function feria.getLocation()
 				back = nil, 		
 				left = nil, 		
 				right = "main",
-				people = 
-				{ 
-					Yuna =	{ age = 35, sex = 'F', opinion = 1, intel = 2, looks = 0, personality = 0 }
-				},			
+				people = { },			
 				messages =
 				{
 					enter = "You open the restroom door and the stench hits you in the face."
@@ -76,11 +85,7 @@ function feria.getLocation()
 				back = "main",		
 				left = nil,			
 				right = nil,		
-				people = 
-				{ 
-					Amber = { age = 22, sex = 'F', opinion = 1, intel = 0, looks = 1, personality = 2 },
-					Lulu =	{ age = 26, sex = 'F', opinion = 1, intel = 2, looks = 2, personality = 2 }
-				},			
+				people = { },			
 				messages =
 				{
 					enter = "You walk up to the bar, ready to order a stiff one."
@@ -89,3 +94,4 @@ function feria.getLocation()
 		} -- rooms
 	}
 end
+
