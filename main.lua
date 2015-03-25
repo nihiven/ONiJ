@@ -1,12 +1,10 @@
 --[[
-	-- TODO
-	change age message to use delta time
-	use constants like line height
-	fix messages overlaying each other
-	moving between locations
+	It's ONiJ
+
+	-- verbs: look, use, give
 ]]--
 
---[[ ------------------------- Global Variables ------------------------- ]]--
+--[[ ------------------------- Collection Variables ------------------------- ]]--
 -- constants
 messages = {} -- the message queue
 chats = {} -- the chat queue
@@ -16,7 +14,16 @@ locations = {} -- all of the places you can go
 location = nil -- you current location
 
 
---[[ ------------------------- libraries ------------------------- ]]--
+--[[ ------------------------- UI Variables ------------------------- ]]--
+items_show = false
+items_selected = 1
+
+
+--[[ ------------------------- Libraries ------------------------- ]]--
+-- load global items
+require "items"
+items = item_list
+
 -- load the different locations
 require "feria"
 locations["feria"] = feria.getLocation()
@@ -24,12 +31,11 @@ locations["feria"] = feria.getLocation()
 
 --[[ ------------------------- Love Callbacks ------------------------- ]]--
 function love.draw()
-	love.graphics.print("RUNNING", 700, 10)
 
-	-- messages
-    printRoomInfo() -- room info
-    printRoomPeople() -- print people in the room
+	printRoomInfo() -- room info
+    printPeople() -- print people around you
 	printMessages() -- message queue
+	printInventory() -- show inventory
 
 end
 
@@ -45,9 +51,9 @@ function love.load()
 
 	-- load intial messages
 	-- defined in reverse because earlier messages reference later ones
-	local intro3 = { text = "Let's dance...",				age = 120, callback = { func = "setLocation",	data = "feria" } }
-	local intro2 = { text = "You can do anything.",			age = 120, callback = { func = "addMessage",		data = intro3 } }
-	local intro1 = { text = "You have one night in Japan.",	age = 120, callback = { func = "addMessage",		data = intro2 } }
+	local intro3 = { text = "Let's dance...",				age = 12, callback = { func = "setLocation",	data = "feria" } }
+	local intro2 = { text = "You can do anything.",			age = 12, callback = { func = "addMessage",	data = intro3 } }
+	local intro1 = { text = "You have one night in Japan.",	age = 12, callback = { func = "addMessage",	data = intro2 } }
 	
 	addMessage(intro1)
 end
@@ -61,6 +67,10 @@ function love.keypressed(key)
 		love.event.quit()
 	elseif key == "up" or key == "down" or key == "left" or key == "right" then
 		processMovement(key)
+	elseif key == "backspace" then
+		items_show = not items_show
+	elseif key == "w" or key == "s" then
+		navigateInventory(key)
    end
 end
 
@@ -103,7 +113,7 @@ end
 
 
 -------------------------  room related functions
--- print info about the current rooms
+-- print info about the current room
 function printRoomInfo()
 	if (location == nil) then return end
 
@@ -127,32 +137,33 @@ function printRoomInfo()
 end
 
 -- list the people in the current room
-function printRoomPeople()
+function printPeople()
 	if (location == nil) then return end
 	
 	local p = getPeople()
 	if (p == nil) then return end
 
 	love.graphics.setColor(0, 200, 0, 255)
+	love.graphics.print("People", 10, 110)
 
-	local i = 0
+	local i = 1
 	for key,value in pairs(p) do
-		love.graphics.print(key .. ": " .. value["age"], 10, (110 + (i * 20)))
+		love.graphics.print(": " .. key .. " (" .. value["age"] .. ")", 10, (110 + (i * 20)))
 		i = i + 1
 	end
 end
 
 -- this moves us from room to room
-function processMovement(key)
+function processMovement(_key)
 	local r = getRoom()
 	local n = nil
-	if key == "up" then
+	if _key == "up" then
 		if (r["forward"] ~= nil) then n = r["forward"] end 
-	elseif key == "down" then 
+	elseif _key == "down" then 
 		if (r["back"] ~= nil) then n = r["back"] end 
-	elseif key == "left" then 
+	elseif _key == "left" then 
 		if (r["left"] ~= nil) then n = r["left"] end
-	elseif key == "right" then
+	elseif _key == "right" then
 		if (r["right"] ~= nil) then n = r["right"] end
 	else
 		return
@@ -179,8 +190,62 @@ function setLocation(_location)
 	enterRoom(locations[location]["room"])
 end
 
+-------------------------  item related functions
+function printInventory()
+	love.graphics.setColor(255, 255, 0, 255)
 
-------------- HELPERS!
+	if (items_show == true) then
+		love.graphics.print("Inventory", love.graphics.getWidth() - 160, 100)
+
+		-- submenu y axis offset
+		local i = 0
+
+		-- loop through all items in your inventory
+		for key,value in pairs(items) do
+			if (key == items_selected) then
+
+				-- if this is the selected item use a special color
+				love.graphics.setColor(255, 0, 0, 255)
+				love.graphics.print(": " .. value["name"], love.graphics.getWidth() - 150, 100 + (key * 20))
+
+				-- intit y axis offset
+				i = 0
+				-- list actions for this item
+				for action,available in pairs(value['actions']) do
+					if (available == true) then
+						love.graphics.print(" : " .. action, love.graphics.getWidth() - 150, 100 + (key * 20) + (i * 20) + 20)
+						i = i+1
+					end
+				end
+			else
+				-- this item isn't select, use the normal color
+				love.graphics.setColor(255, 255, 0, 255)
+				love.graphics.print(": " .. value["name"], love.graphics.getWidth() - 150, 100 + (key * 20) + (i * 20))
+			end
+			
+		end
+	else
+		love.graphics.print("Inventory" .. " (" .. #items .. ")", love.graphics.getWidth() - 160, 100)
+	end
+end
+
+function navigateInventory(_key)
+	if (items_show == true) then
+		if (_key == "w") then
+			items_selected = items_selected - 1
+			if (items_selected == 0) then items_selected = #items end
+		end
+		if (_key == "s") then
+			items_selected = items_selected + 1
+			if (items_selected > #items) then items_selected = 1 end
+		end
+	end
+end
+
+------------- HELPERS
+
+--- please get rid of the need for all of these
+--- if we need all of these then the data structure is junko
 function getLocation()
 	return locations[location]
 end

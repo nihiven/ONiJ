@@ -20,18 +20,35 @@
 	"buffers":
 	[
 		{
-			"file": "feria.lua",
+			"file": "main.lua",
 			"settings":
 			{
-				"buffer_size": 2532,
+				"buffer_size": 5889,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "main.lua",
+			"file": "items.lua",
 			"settings":
 			{
-				"buffer_size": 5221,
+				"buffer_size": 615,
+				"line_ending": "Windows",
+				"name": "-- items"
+			}
+		},
+		{
+			"file": "feria.lua",
+			"settings":
+			{
+				"buffer_size": 2492,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "todo.txt",
+			"settings":
+			{
+				"buffer_size": 223,
 				"line_ending": "Windows"
 			}
 		}
@@ -39,12 +56,24 @@
 	"build_system": "Packages/User/nihiven.sublime-build",
 	"command_palette":
 	{
-		"height": 288.0,
+		"height": 104.0,
 		"selected_items":
 		[
 			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git comm	",
+				"Git: Commit"
+			],
+			[
 				"git ad",
 				"Git: Add Current File"
+			],
+			[
+				"git co",
+				"Git: Commit"
 			],
 			[
 				"git",
@@ -68,6 +97,11 @@
 	},
 	"file_history":
 	[
+		"/C/Users/nihiven/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/C/Users/nihiven/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/C/love.bat",
+		"/C/Users/nihiven/AppData/Roaming/Sublime Text 2/Packages/User/nihiven.sublime-build",
+		"/E/Google Drive/Code/Game Prototypes/love_test/ONiJ/onij.sublime-project",
 		"/E/Google Drive/Code/Game Prototypes/love_test/main.lua",
 		"/E/Google Drive/Code/Game Prototypes/love_test/feria.lua",
 		"/E/Google Drive/Code/Game Prototypes/onij/onij.html",
@@ -83,7 +117,6 @@
 		"/C/Users/nihiven/Desktop/lua-libxml-master/docs/quick_start.md",
 		"/C/Users/nihiven/Desktop/lua-libxml-master/xml/init.lua",
 		"/C/Users/nihiven/Desktop/lua-libxml-master/README.md",
-		"/C/Users/nihiven/AppData/Roaming/Sublime Text 2/Packages/User/nihiven.sublime-build",
 		"/E/Google Drive/Code/Game Prototypes/mrrescue/fire.lua",
 		"/E/Google Drive/Code/Game Prototypes/mrrescue/options.lua",
 		"/E/Google Drive/Code/Game Prototypes/mrrescue/ingame.lua",
@@ -110,6 +143,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"auto",
+			"then",
 			"jaguar",
 			"my",
 			"adventure",
@@ -142,23 +177,23 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "feria.lua",
+					"file": "main.lua",
 					"settings":
 					{
-						"buffer_size": 2532,
+						"buffer_size": 5889,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								5357,
+								5357
 							]
 						],
 						"settings":
@@ -174,24 +209,77 @@
 				},
 				{
 					"buffer": 1,
-					"file": "main.lua",
+					"file": "items.lua",
 					"settings":
 					{
-						"buffer_size": 5221,
+						"buffer_size": 615,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								615,
+								615
+							]
+						],
+						"settings":
+						{
+							"auto_name": "-- items",
+							"syntax": "Packages/Lua/Lua.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "feria.lua",
+					"settings":
+					{
+						"buffer_size": 2492,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								125,
+								125
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Lua/Lua.tmLanguage",
 							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "todo.txt",
+					"settings":
+					{
+						"buffer_size": 223,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								223,
+								223
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -236,6 +324,10 @@
 	"output.exec":
 	{
 		"height": 50.0
+	},
+	"output.git":
+	{
+		"height": 100.0
 	},
 	"replace":
 	{

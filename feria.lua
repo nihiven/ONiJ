@@ -1,4 +1,4 @@
--- create the location container
+-- create the location feria
 feria = {}
 
 local couch =
@@ -9,9 +9,7 @@ local couch =
 		sit = function() return 2 end
 	}
 }
-function items.couch()
-	return 2
-end
+
 
 function feria.getLocation()
 	return 
