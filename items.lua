@@ -57,6 +57,14 @@ function iWallet.look(_data)
 	addMessage({text = "It's your wallet. It's made of the finest leather."})
 end
 
+function iWallet.update(_data)
+	if (#iWallet.contents == 0) then
+		iWallet.actions.open = false
+	else
+		iWallet.actions.open = true
+	end
+end
+
 
 -- define your keys
 iKeys = 
