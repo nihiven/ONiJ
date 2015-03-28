@@ -22,6 +22,11 @@ Item Usage
  Pull	Close	Pick up		Unlock		Turn off
  Give	Read	What is 	Use 		Fix
 
+ Oni Verbs v1
+ Push	Open	 Talk to
+ Pull	Close	 Pick Up
+ Give	Look at  Use
+
 
  UI Build
   X Messages

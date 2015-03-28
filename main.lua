@@ -9,7 +9,6 @@ items = {} -- items you are carrying
 locations = {} -- all of the places you can go
 location = nil -- you current location
 
-
 --[[ ------------------------- Libraries ------------------------- ]]--
 -- support libraries
 require "colors"
@@ -38,7 +37,7 @@ ui.msg =
 -- room
 ui.room = 
 {
-	padTop = 40,
+	padTop = 30,
 	padBottom = 240,
 	movesX = 80,
 	color = colorsRGB.slategrey
@@ -64,14 +63,49 @@ peopleSelected = 1
 messagesColorRoom = colorsRGB.white
 messagesColorPeople = colorsRGB.pink
 
+--[[ ------------------------- Verbs ------------------------- ]]--
+--[[ 
+	Push	Open	 Talk to
+ 	Pull	Close	 Pick Up
+ 	Give	Look at  Use        
+	]]--
+-- this controls how the verb grid is built
+-- we'll build the grid in buildlVerbGrid() and store it in the ui table
+ui.verb = 
+{ 
+	width = 150,
+	height = 70,
+	selectedX = 0,
+	selectedY = 0,
+	grid = { }
+}
+verbs = 
+{ 
+	{
+		{ verb = "push", text = "Push" }, 
+		{ verb = "open", text = "Open"}, 
+		{ verb = "talk", text = "Talk to"}
+	},
+		{
+		{ verb = "pull", text = "Pull"},
+		{ verb = "close", text = "Close"},
+		{ verb = "pickup", text = "Pick Up"}
+	},
+	{
+		{ verb = "give", text = "Give"},
+		{ verb = "look", text = "Look at"},
+		{ verb = "use", text = "Use"}
+	}
+}
+
 
 --[[ ------------------------- Love Callbacks ------------------------- ]]--
 function love.draw()
-
+	drawVerbs()
 	printRoomInfo() -- room info
-    printPeople() -- print people around you
+  	printPeople() -- print people around you
 	printMessages() -- message queue
---	printInventory() -- show inventory
+	--printInventory() -- show inventory
 
 end
 
@@ -87,7 +121,9 @@ function love.load()
 		height = love.graphics.getHeight(),
 		midY = love.graphics.getHeight() / 2
 	}
-	
+
+	-- build the data for the verb grid
+	buildVerbGrid()
 
 	-- load intial messages
 	-- defined in reverse because earlier messages reference later ones
@@ -340,11 +376,56 @@ end
 --[[ ------------------------- UI Related ------------------------- ]]--
 -- this is purely ui, so maybe we need to bring UI related functions here...
 -- such as drawRoom??
-function drawVerbs(_item)
-	-- split sections, draw stuff
-	
+function buildVerbGrid()
+	-- build verb grid for use later and store some helper variables for click detection
+
+	for i = 1,#verbs,1 do -- build one row at a time
+		local r = { }
+
+		for j = 1,#verbs[i],1 do -- column
+			r[j] = 
+			{
+				verb = verbs[j][i].verb,
+				text = verbs[j][i].text,
+				x = (j-1) * ui.verb.width,
+				y = (i-1) * ui.verb.height + (ui.room.padTop + ui.scr.height - ui.room.padBottom)
+			}
+		end
+
+		-- add row to table
+		ui.verb.grid[i] = r
+	end
+
 end
 
+-- draw the stored grid, adjust colors for context
+function drawVerbs(_item)
+	for i,row in pairs(ui.verb.grid) do
+		for j,col in pairs(row) do
+			if (j == ui.verb.selectedX and i == ui.verb.selectedY) then
+				_sc(colorsRGB.lime)
+				love.graphics.rectangle('line', col.x, col.y, ui.verb.width, ui.verb.height)
+			else
+				_sc(colorsRGB.black)
+				love.graphics.rectangle('fill', col.x, col.y, ui.verb.width, ui.verb.height)
+			end
+
+			-- drawing is weird
+		end
+	end
+end
+
+-- putting this here for now
+function love.mousepressed(x, y, button)
+	local cy = y - (ui.room.padTop + ui.scr.height - ui.room.padBottom)
+	local gridX = math.floor(x / ui.verb.width) + 1
+	local gridY = math.floor(cy / ui.verb.height) + 1
+
+	if (gridX >= 1 and gridX <= 3) and (gridY >= 1 and gridY <= 3) then
+		ui.verb.selectedX = gridX
+		ui.verb.selectedY = gridY
+	end
+end
 
 ------------- HELPERS
 function _p(_text, _x, _y)

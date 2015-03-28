@@ -6,4 +6,5 @@ function love.conf(t)
 	t.window.borderless = false        		-- Remove all border visuals from the window (boolean)
 	t.modules.physics = false          		-- disable the physics module (boolean)
 	t.modules.joystick = false				-- disable the joystick module (boolean)
+	t.window.fsaa = 0                  -- The number of samples to use with multi-sampled antialiasing (number)
 end
