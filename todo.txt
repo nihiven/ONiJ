@@ -5,9 +5,28 @@ moving between locations
  - do we even need locations? rooms are good enough. rename them 'scenes' or something
 
 
-item usage
+
+Controls
+up/down/left/right - Navigate through rooms
+Q/A - Cycle through people in the room
+W/S - Cycle through items in the room
+E/D - Cycle through your inventory
+Item Usage
  - [U]se
  - [L]ook
  - [O]pen
 
- please please pick a naming convention
+
+ Maniac Mansion Verbs
+ Push	Open	Walk to 	New Kid		Turn on
+ Pull	Close	Pick up		Unlock		Turn off
+ Give	Read	What is 	Use 		Fix
+
+
+ UI Build
+  X Messages
+  : Room / Movement
+  : People
+  : Items
+  : Verbs
+  : Inventory

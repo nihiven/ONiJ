@@ -1,8 +1,4 @@
---[[
-	It's ONiJ
-
-	-- verbs: look, use, give
-]]--
+--[[ It's ONiJ ]]--
 
 --[[ ------------------------- Collection Variables ------------------------- ]]--
 -- constants
@@ -28,8 +24,32 @@ locations.feria = feria.getLocation()
 
 
 --[[ ------------------------- UI Variables ------------------------- ]]--
+ui = { }
+
+-- messages
+ui.msg =
+{
+	padX = 10,
+	padY = 10,
+	width = love.graphics.getWidth() - (10 * 2),
+	color = colorsRGB.red
+}
+
+-- room
+ui.room = 
+{
+	padTop = 40,
+	padBottom = 240,
+	movesX = 80,
+	color = colorsRGB.slategrey
+}
 
 -- inventory
+ui.inv = 
+{
+	show = false,
+	selected = 1
+}
 inventoryShow = false
 inventorySelected = 1
 inventoryX = 600
@@ -41,8 +61,7 @@ inventoryColorSelected = colorsRGB.red
 peopleSelected = 1
 
 -- messages
-messagesColorSystem = colorsRGB.red
-messagesColorRoom = colorsRGB.slategrey
+messagesColorRoom = colorsRGB.white
 messagesColorPeople = colorsRGB.pink
 
 
@@ -52,7 +71,7 @@ function love.draw()
 	printRoomInfo() -- room info
     printPeople() -- print people around you
 	printMessages() -- message queue
-	printInventory() -- show inventory
+--	printInventory() -- show inventory
 
 end
 
@@ -60,15 +79,19 @@ end
 function love.load()
 	loadConfig()
 
-	-- set reference variables
-	screenX = love.graphics.getWidth()
-	screenMidX = screenX / 2
-	screenY = love.graphics.getHeight()
-	screenMidY = screenY / 2
+	-- set ui variables for the screen
+	ui.scr = 
+	{
+		width = love.graphics.getWidth(),
+		midX = love.graphics.getWidth() / 2,
+		height = love.graphics.getHeight(),
+		midY = love.graphics.getHeight() / 2
+	}
+	
 
 	-- load intial messages
 	-- defined in reverse because earlier messages reference later ones
-	local intro3 = { text = "Let's dance...",				age = 12, callback = { func = "setLocation",	data = "feria" } }
+	local intro3 = { text = "One Night in Japan",			age = 36, callback = { func = "setLocation",	data = "feria" } }
 	local intro2 = { text = "You can do anything.",			age = 12, callback = { func = "addMessage",		data = intro3 } }
 	local intro1 = { text = "You have one night in Japan.",	age = 12, callback = { func = "addMessage",		data = intro2 } }
 	
@@ -111,18 +134,16 @@ function printMessages()
 	if (#messages == 0) then return end
 
 	local m = messages[1]
-	love.graphics.setColor(messagesColorSystem)
-	--love.graphics.printf(m["text"] .. " (" .. m["age"] .. ")", 25, 540, 580, "left")
-	love.graphics.printf(m.text, 20, (love.graphics.getHeight()-120), 600, "left")
+
+	_sc(ui.msg.color)
+	_pf(m.text, ui.msg.padX, ui.msg.padY, ui.msg.width, "left")
 
 	if (m.age <= 0) then
-
-		-- if the message has a callback, execute it
 		if (m.callback ~= nil) then
-			runCallback(m.callback.func, m.callback.data)
+			runCallback(m.callback.func, m.callback.data) 		-- if the message has a callback, execute it
 		end
 
-		table.remove(messages, 1)
+		table.remove(messages, 1) -- message has aged out, remove it
 	else
 	    messages[1].age = m.age - 1
 	end
@@ -144,11 +165,16 @@ end
 function printRoomInfo()
 	if (location == nil) then return end
 
+	-- we'll put all of the room related printing/drawing stuff here for now
+	-- draw the room background
+	_sc(ui.room.color)
+	 love.graphics.rectangle("fill", 0, ui.room.padTop, ui.scr.width, ui.scr.height - ui.room.padBottom)
+
 	local r = getRoom()
 	local rs = getRooms()
 
-	love.graphics.setColor(messagesColorRoom)
-	love.graphics.print("Room: " .. r.name, 10, 10)
+	_sc(messagesColorRoom)
+	_pf(r.name, 0, ui.room.padTop, ui.scr.width, "center")
 
 	-- print movement options
 	local m = {}
@@ -158,7 +184,7 @@ function printRoomInfo()
 	if (r.right ~= nil) then table.insert(m, "Right: " .. rs[r.right].name) end 
 	
 	for i = #m,1,-1 do
-		love.graphics.print(m[i],10,i*20+30)
+		_pf(m[i],0,ui.room.movesX+i*20, ui.scr.width, "center")
 	end
 end
 
@@ -167,16 +193,15 @@ end
 function processMovement(_key)
 	local r = getRoom()
 	local n = nil
+
 	if _key == "up" then
-		if (r.forward ~= nil) then n = r.forward end 
+		if (r.forward ~= nil) 	then n = r.forward end 
 	elseif _key == "down" then 
-		if (r.back ~= nil) then n = r.back end 
+		if (r.back ~= nil) 		then n = r.back end 
 	elseif _key == "left" then 
-		if (r.left ~= nil) then n = r.left end
+		if (r.left ~= nil) 		then n = r.left end
 	elseif _key == "right" then
-		if (r.right ~= nil) then n = r.right end
-	else
-		return
+		if (r.right ~= nil) 	then n = r.right end
 	end
 
 	if (n ~= nil) then enterRoom(n) end
@@ -203,10 +228,10 @@ end
 
 --[[ ------------------------- Item Related ------------------------- ]]--
 function printInventory()
-	love.graphics.setColor(inventoryColorNormal)
+	_sc(inventoryColorNormal)
 
 	if (inventoryShow == true) then
-		love.graphics.print("Inventory", inventoryX - 10, inventoryY)
+		_p("Inventory", inventoryX - 10, inventoryY)
 
 		-- submenu y axis offset
 		local i = 0
@@ -216,27 +241,27 @@ function printInventory()
 			if (key == inventorySelected) then
 
 				-- if this is the selected item use a special color
-				love.graphics.setColor(inventoryColorSelected)
-				love.graphics.print(": " .. value.name, inventoryX, inventoryY + (key * 20))
+				_sc(inventoryColorSelected)
+				_p(": " .. value.name, inventoryX, inventoryY + (key * 20))
 
 				-- intit y axis offset
 				i = 0
 				-- list actions for this item
 				for action,available in pairs(value.actions) do
 					if (available == true) then
-						love.graphics.print(" : " .. action, inventoryX, inventoryY + (key * 20) + (i * 20) + 20)
+						_p(" : " .. action, inventoryX, inventoryY + (key * 20) + (i * 20) + 20)
 						i = i+1
 					end
 				end
 			else
 				-- this item isn't select, use the normal color
-				love.graphics.setColor(inventoryColorNormal)
-				love.graphics.print(": " .. value.name, inventoryX, inventoryY + (key * 20) + (i * 20))
+				_sc(inventoryColorNormal)
+				_p(": " .. value.name, inventoryX, inventoryY + (key * 20) + (i * 20))
 			end
 			
 		end
 	else
-		love.graphics.print("Inventory" .. " (" .. #items .. ")", inventoryX - 10, inventoryY)
+		_p("Inventory" .. " (" .. #items .. ")", inventoryX - 10, inventoryY)
 	end
 end
 
@@ -266,8 +291,12 @@ function actionItem(_key)
 
 	if (action ~= nil) then
 		item[action]()	-- execute the [item].[action] function
+		-- the line above shows how to execute a variable that stores a function
+		-- in this case item resolves to an item object like iPhone and
+		-- action resolves to function of iPhone, like use
+		-- this ends up being iPhone[use]() which is the same as calling iPhone.use()
 
-		-- some functions require updates after processing an actions
+		-- some functions require updates after processing an action
 		if (item.update ~= nil) then
 			item.update()
 		end
@@ -299,17 +328,34 @@ function printPeople()
 	local p = getPeople()
 	if (p == nil) then return end
 
-	love.graphics.setColor(messagesColorPeople)
-	love.graphics.print("People", 10, 110)
+	_sc(messagesColorPeople)
+	_p("People", 10, ui.room.padTop)
 
 	for key,person in pairs(p) do
-		love.graphics.print(": " .. person.name .. " (" .. person.age .. ")", 10, (110 + (key * 20)))
+		_p(" : " .. person.name .. " (" .. person.age .. ")", 10, ui.room.padTop + (key * 20))
 	end
 end
 
 
+--[[ ------------------------- UI Related ------------------------- ]]--
+-- this is purely ui, so maybe we need to bring UI related functions here...
+-- such as drawRoom??
+function drawVerbs(_item)
+	-- split sections, draw stuff
+	
+end
+
 
 ------------- HELPERS
+function _p(_text, _x, _y)
+	love.graphics.print(_text, _x, _y)
+end
+function _pf(_text, _x, _y, _w, _align)
+	love.graphics.printf(_text, _x, _y, _w, _align)
+end
+function _sc(_color)
+	love.graphics.setColor(_color)
+end
 
 --- please get rid of the need for all of these
 --- if we need all of these then the data structure is junko
