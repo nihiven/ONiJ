@@ -1,9 +1,8 @@
+Misc
 change age message to use delta time
-use constants like line height
 no input until intro is complete or skipped
 moving between locations
  - do we even need locations? rooms are good enough. rename them 'scenes' or something
-
 
 
 Controls
@@ -33,5 +32,13 @@ Item Usage
   : Room / Movement
   : People
   : Items
-  : Verbs
+  ? Verbs
   : Inventory
+
+
+Colors
+sometimes color refers to the background, other times the font
+
+
+Old Fame Bits
+You're floating, slowly rising through the atmosphere. The Earth shrinks underneath you as you gain speed... it begins to fade away. Distant stars become visible, brighter. You're rising faster, faster still. You begin to sense movement in the motionless canvas of space.The stars gravitate toward you, accelerating all at once. Your vision begins to blur as the cosmos shrinks around you. You exhale the last bit of oxygen from your lungs. Your life spills out into the stars and becomes the space around you. You close your eyes tightly...

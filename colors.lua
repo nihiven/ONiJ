@@ -165,7 +165,10 @@ wheat = {245, 222, 179},
 white = {255, 255, 255},
 whitesmoke = {245, 245, 245},
 yellow = {255, 255, 0},
-yellowgreen = {154, 205, 50}
+yellowgreen = {154, 205, 50},
+
+-- added for ONiJ
+darkshadow = {75, 75, 75}
 }
 
 colorsRGB.R = function (name)

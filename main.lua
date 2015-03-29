@@ -28,10 +28,17 @@ ui = { }
 -- messages
 ui.msg =
 {
-	padX = 10,
-	padY = 10,
-	width = love.graphics.getWidth() - (10 * 2),
-	color = colorsRGB.red
+	sys = 
+	{
+		padX = 10,
+		padY = 10,
+		width = love.graphics.getWidth() - (10 * 2),
+		color = colorsRGB.red
+	},
+	event = 
+	{
+		color = colorsRGB.white
+	}
 }
 
 -- room
@@ -59,8 +66,6 @@ inventoryColorSelected = colorsRGB.red
 -- people
 peopleSelected = 1
 
--- messages
-messagesColorRoom = colorsRGB.white
 messagesColorPeople = colorsRGB.pink
 
 --[[ ------------------------- Verbs ------------------------- ]]--
@@ -73,10 +78,12 @@ messagesColorPeople = colorsRGB.pink
 -- we'll build the grid in buildlVerbGrid() and store it in the ui table
 ui.verb = 
 { 
-	width = 150,
+	width = 100,
 	height = 70,
+	color = colorsRGB.white,
 	selectedX = 0,
 	selectedY = 0,
+	selectedColor = colorsRGB.lime,
 	grid = { }
 }
 verbs = 
@@ -159,7 +166,7 @@ end
 
 --[[ ------------------------- My Functions ------------------------- ]]--
 function loadConfig()
-	love.graphics.setNewFont("Neon.ttf", 18)
+	ui.font = love.graphics.setNewFont("Neon.ttf", 18)	
 end
 
 
@@ -171,12 +178,12 @@ function printMessages()
 
 	local m = messages[1]
 
-	_sc(ui.msg.color)
-	_pf(m.text, ui.msg.padX, ui.msg.padY, ui.msg.width, "left")
+	_pf(m.text, ui.msg.sys.padX, ui.msg.sys.padY - 5, ui.msg.sys.width, "left", ui.msg.sys.color, false)
 
 	if (m.age <= 0) then
 		if (m.callback ~= nil) then
-			runCallback(m.callback.func, m.callback.data) 		-- if the message has a callback, execute it
+			-- if the message has a callback, execute it
+			runCallback(m.callback.func, m.callback.data)
 		end
 
 		table.remove(messages, 1) -- message has aged out, remove it
@@ -209,8 +216,7 @@ function printRoomInfo()
 	local r = getRoom()
 	local rs = getRooms()
 
-	_sc(messagesColorRoom)
-	_pf(r.name, 0, ui.room.padTop, ui.scr.width, "center")
+	_pf(r.name, 0, ui.room.padTop, ui.scr.width, "center", ui.msg.event.color, true)
 
 	-- print movement options
 	local m = {}
@@ -220,7 +226,7 @@ function printRoomInfo()
 	if (r.right ~= nil) then table.insert(m, "Right: " .. rs[r.right].name) end 
 	
 	for i = #m,1,-1 do
-		_pf(m[i],0,ui.room.movesX+i*20, ui.scr.width, "center")
+		_pf(m[i],0,ui.room.movesX+i*20, ui.scr.width, "center", ui.msg.event.color, true)
 	end
 end
 
@@ -364,11 +370,10 @@ function printPeople()
 	local p = getPeople()
 	if (p == nil) then return end
 
-	_sc(messagesColorPeople)
-	_p("People", 10, ui.room.padTop)
+	_p("People", 10, ui.room.padTop, messagesColorPeople, true)
 
 	for key,person in pairs(p) do
-		_p(" : " .. person.name .. " (" .. person.age .. ")", 10, ui.room.padTop + (key * 20))
+		_p(" : " .. person.name .. " (" .. person.age .. ")", 10, ui.room.padTop + (key * 20), messagesColorPeople, true)
 	end
 end
 
@@ -402,20 +407,23 @@ end
 function drawVerbs(_item)
 	for i,row in pairs(ui.verb.grid) do
 		for j,col in pairs(row) do
+ 			
+ 			--- required to center text vertically
+			local cy = col.y - (ui.font:getHeight() / 2) + (ui.verb.height / 2)
+			local color = ui.verb.color
+
+			-- change color if the text is highlighted
 			if (j == ui.verb.selectedX and i == ui.verb.selectedY) then
-				_sc(colorsRGB.lime)
-				love.graphics.rectangle('line', col.x, col.y, ui.verb.width, ui.verb.height)
-			else
-				_sc(colorsRGB.black)
-				love.graphics.rectangle('fill', col.x, col.y, ui.verb.width, ui.verb.height)
+				color = ui.verb.selectedColor
 			end
 
-			-- drawing is weird
+			--love.graphics.rectangle('line', col.x, col.y, ui.verb.width, ui.verb.height)
+			_pf(col.text, col.x, cy, ui.verb.width, "center", color, true)
 		end
 	end
 end
 
--- putting this here for now
+-- putting this here for now, will move out once UI is sorted
 function love.mousepressed(x, y, button)
 	local cy = y - (ui.room.padTop + ui.scr.height - ui.room.padBottom)
 	local gridX = math.floor(x / ui.verb.width) + 1
@@ -428,18 +436,34 @@ function love.mousepressed(x, y, button)
 end
 
 ------------- HELPERS
-function _p(_text, _x, _y)
+function _p(_text, _x, _y, _color, _shadow)
+	if (_shadow == true) then 
+		_sc(colorsRGB.darkshadow)
+		love.graphics.print(_text, _x+1, _y+1)
+	end
+
+	_sc(_color)
 	love.graphics.print(_text, _x, _y)
 end
-function _pf(_text, _x, _y, _w, _align)
+
+function _pf(_text, _x, _y, _w, _align, _color, _shadow)
+	if (_shadow == true) then 
+		_sc(colorsRGB.darkshadow)
+		love.graphics.printf(_text, _x+1, _y+1, _w, _align)
+	end
+
+	_sc(_color)
 	love.graphics.printf(_text, _x, _y, _w, _align)
 end
+
 function _sc(_color)
 	love.graphics.setColor(_color)
 end
 
+
+-------------------------------------------------------------------------------------
 --- please get rid of the need for all of these
---- if we need all of these then the data structure is junko
+--- if we NEED all of these then the data structure is 'JENK'
 function getLocation()
 	return locations[location]
 end
