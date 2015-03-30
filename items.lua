@@ -7,7 +7,8 @@
 ---- define your phone
 iPhone = 
 {
-	img = "",
+	id = "iPhone",
+	img = "iPhone.png",
 	name = "Cell Phone",
 	numbers = { },
 	actions = { use = true, look = true }
@@ -26,6 +27,8 @@ end
 -- define your debit card
 iDebit = 
 {
+	id = "iDebit",
+	img = "iDebit.png",
 	name = "Debit Card",
 	money = 1000,
 	actions = { look = true }
@@ -38,7 +41,9 @@ end
 
 -- define your wallet
 iWallet = 
-{
+{	
+	id = "iWallet",
+	img = "iWallet.png",
 	name = "Leather Wallet",
 	contents = { iDebit },
 	actions = { look = true, open = true }
@@ -70,6 +75,8 @@ end
 -- define your keys
 iKeys = 
 {
+	id = "iKeys",
+	img = "iKeys.png",
 	name = "Car Keys",
 	actions = { look = true }
 }

@@ -8,6 +8,7 @@ actions = {} -- actions available to you
 items = {} -- items you are carrying
 locations = {} -- all of the places you can go
 location = nil -- you current location
+images = {} -- holds the item images
 
 --[[ ------------------------- Libraries ------------------------- ]]--
 -- support libraries
@@ -105,6 +106,7 @@ verbs =
 }
 
 
+
 --[[ ------------------------- Love Callbacks ------------------------- ]]--
 function love.draw()
 	drawVerbs()
@@ -112,12 +114,14 @@ function love.draw()
   	printPeople() -- print people around you
 	printMessages() -- message queue
 	printInventory() -- show inventory
+	drawInventory() -- drawing inventory icons
 
 end
 
 -- called on startup
 function love.load()
 	loadConfig()
+	loadImages()
 
 	-- set ui variables for the screen
 	ui.scr = 
@@ -302,6 +306,37 @@ function printInventory()
 		_p("Inventory" .. " (" .. #items .. ")", ui.inv.x - 10, ui.inv.y, ui.inv.color, true)
 	end
 end
+
+
+function loadImages()
+	-- for each image load its iName.png
+	for key,value in pairs(items) do
+		images[value.id] = love.graphics.newImage(value.img)
+	end
+end
+
+-- replaces printInventory()
+function drawInventory()
+	-- we'll need to load images elsewhere...............
+	local x = ui.scr.midX
+	local y = (ui.room.padTop + ui.scr.height - ui.room.padBottom)
+
+	-- setting color to white will draw the images without color tint
+	_sc(colorsRGB.white)
+
+	-- loop through all items in your inventory
+	for key,value in pairs(items) do
+		if (key == ui.inv.selected) then
+			-- if this is the selected item use a special color: ui.inv.colorSelected
+			love.graphics.draw(images[value.id], x, y)
+		else
+			-- this item isn't select, use the normal color
+			love.graphics.draw(images[value.id], x, y)
+		end
+		x = x + 100
+	end
+end
+
 
 -- change selected item in your inventory
 function navigateInventory(_key)
