@@ -56,8 +56,9 @@ ui.inv =
 {
 	show = false,
 	selected = 1,
-	x = 600,
-	y = 10,
+	x = 480,
+	y = 30,
+	maxColumns = 6,
 	color = colorsRGB.yellow,
 	colorSelected = colorsRGB.red
 }
@@ -275,7 +276,7 @@ end
 function printInventory()
 
 	if (ui.inv.show == true) then
-		_p("Inventory", ui.inv.x - 10, ui.inv.y, ui.inv.color, true)
+		_p("Inventory", ui.inv.x, ui.inv.y, ui.inv.color, true)
 
 		-- submenu y axis offset
 		local i = 0
@@ -318,7 +319,7 @@ end
 -- replaces printInventory()
 function drawInventory()
 	-- we'll need to load images elsewhere...............
-	local x = ui.scr.midX
+	local x = ui.inv.x
 	local y = (ui.room.padTop + ui.scr.height - ui.room.padBottom)
 
 	-- setting color to white will draw the images without color tint
@@ -355,6 +356,7 @@ end
 
 function addToInventory(_item)
 	addMessage({text = "Added " .. _item.name .. " to your inventory."})
+	images[_item.id] = love.graphics.newImage(_item.img)
 	table.insert(items, _item)
 end
 
@@ -459,14 +461,27 @@ end
 
 -- putting this here for now, will move out once UI is sorted
 function love.mousepressed(x, y, button)
-	local cy = y - (ui.room.padTop + ui.scr.height - ui.room.padBottom)
-	local gridX = math.floor(x / ui.verb.width) + 1
-	local gridY = math.floor(cy / ui.verb.height) + 1
+	clickVerbs(x, y, button)
+	clickInventory(x, y, button)
+end
 
-	if (gridX >= 1 and gridX <= 3) and (gridY >= 1 and gridY <= 3) then
-		ui.verb.selectedX = gridX
-		ui.verb.selectedY = gridY
-		ui.verb.selected = verbs[gridX][gridY].verb
+function clickVerbs(_x, _y, _button)
+	if (_button == "l") then
+		local cy = _y - (ui.room.padTop + ui.scr.height - ui.room.padBottom)
+		local gridX = math.floor(_x / ui.verb.width) + 1
+		local gridY = math.floor(cy / ui.verb.height) + 1
+
+		if (gridX >= 1 and gridX <= 3) and (gridY >= 1 and gridY <= 3) then
+			ui.verb.selectedX = gridX
+			ui.verb.selectedY = gridY
+			ui.verb.selected = verbs[gridX][gridY].verb
+		end
+	end
+end
+
+function clickInventory(_x, _y, _button)
+	if (_button == "l") then
+
 	end
 end
 
