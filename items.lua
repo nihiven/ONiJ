@@ -7,6 +7,7 @@
 ---- define your phone
 iPhone = 
 {
+	img = "",
 	name = "Cell Phone",
 	numbers = { },
 	actions = { use = true, look = true }

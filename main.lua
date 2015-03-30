@@ -54,14 +54,12 @@ ui.room =
 ui.inv = 
 {
 	show = false,
-	selected = 1
+	selected = 1,
+	x = 600,
+	y = 10,
+	color = colorsRGB.yellow,
+	colorSelected = colorsRGB.red
 }
-inventoryShow = false
-inventorySelected = 1
-inventoryX = 600
-inventoryY = 10
-inventoryColorNormal = colorsRGB.yellow
-inventoryColorSelected = colorsRGB.red
 
 -- people
 peopleSelected = 1
@@ -78,13 +76,14 @@ messagesColorPeople = colorsRGB.pink
 -- we'll build the grid in buildlVerbGrid() and store it in the ui table
 ui.verb = 
 { 
-	width = 100,
-	height = 70,
+	width = 100, -- width per block
+	height = 60, -- height per block
 	color = colorsRGB.white,
-	selectedX = 0,
-	selectedY = 0,
+	selected = nil, -- selected verb
+	selectedX = nil, -- x coord of selected verb
+	selectedY = nil, -- y coord of selected verb
 	selectedColor = colorsRGB.lime,
-	grid = { }
+	grid = { } -- contains the grid built by buildVerbGrid()
 }
 verbs = 
 { 
@@ -101,7 +100,7 @@ verbs =
 	{
 		{ verb = "give", text = "Give"},
 		{ verb = "look", text = "Look at"},
-		{ verb = "use", text = "Use"}
+		{ verb = "use", text = "Use"} -- 'use with' is contextual?
 	}
 }
 
@@ -112,7 +111,7 @@ function love.draw()
 	printRoomInfo() -- room info
   	printPeople() -- print people around you
 	printMessages() -- message queue
-	--printInventory() -- show inventory
+	printInventory() -- show inventory
 
 end
 
@@ -151,7 +150,7 @@ function love.keypressed(key)
 	elseif key == "up" or key == "down" or key == "left" or key == "right" then
 		processMovement(key)
 	elseif key == "backspace" then
-		inventoryShow = not inventoryShow
+		ui.inv.show = not ui.inv.show
 	elseif key == "q" or key == "a" then
 		navigatePeople(key)
 	elseif key == "w" or key == "s" then
@@ -270,53 +269,51 @@ end
 
 --[[ ------------------------- Item Related ------------------------- ]]--
 function printInventory()
-	_sc(inventoryColorNormal)
 
-	if (inventoryShow == true) then
-		_p("Inventory", inventoryX - 10, inventoryY)
+	if (ui.inv.show == true) then
+		_p("Inventory", ui.inv.x - 10, ui.inv.y, ui.inv.color, true)
 
 		-- submenu y axis offset
 		local i = 0
 
 		-- loop through all items in your inventory
 		for key,value in pairs(items) do
-			if (key == inventorySelected) then
+			if (key == ui.inv.selected) then
 
 				-- if this is the selected item use a special color
-				_sc(inventoryColorSelected)
-				_p(": " .. value.name, inventoryX, inventoryY + (key * 20))
+				_p(": " .. value.name, ui.inv.x, ui.inv.y + (key * 20), ui.inv.colorSelected, true)
 
 				-- intit y axis offset
 				i = 0
 				-- list actions for this item
 				for action,available in pairs(value.actions) do
 					if (available == true) then
-						_p(" : " .. action, inventoryX, inventoryY + (key * 20) + (i * 20) + 20)
+						_p(" : " .. action, ui.inv.x, ui.inv.y + (key * 20) + (i * 20) + 20, ui.inv.colorSelected, true)
 						i = i+1
 					end
 				end
 			else
 				-- this item isn't select, use the normal color
-				_sc(inventoryColorNormal)
-				_p(": " .. value.name, inventoryX, inventoryY + (key * 20) + (i * 20))
+				_p(": " .. value.name, ui.inv.x, ui.inv.y + (key * 20) + (i * 20), ui.inv.color, true)
 			end
 			
 		end
 	else
-		_p("Inventory" .. " (" .. #items .. ")", inventoryX - 10, inventoryY)
+		_p("Inventory" .. " (" .. #items .. ")", ui.inv.x - 10, ui.inv.y, ui.inv.color, true)
 	end
 end
 
 -- change selected item in your inventory
 function navigateInventory(_key)
-	if (inventoryShow == true) then
+	if (ui.inv.show == true) then
 		if (_key == "e") then
-			inventorySelected = inventorySelected - 1
-			if (inventorySelected == 0) then inventorySelected = #items end
+			ui.inv.selected = ui.inv.selected - 1
+			if (ui.inv.selected == 0) then ui.inv.selected = #items end
+			ui.verb.selected = ""
 		end
 		if (_key == "d") then
-			inventorySelected = inventorySelected + 1
-			if (inventorySelected > #items) then inventorySelected = 1 end
+			ui.inv.selected = ui.inv.selected + 1
+			if (ui.inv.selected > #items) then ui.inv.selected = 1 end
 		end
 	end
 end
@@ -328,7 +325,7 @@ end
 
 -- perform given action on currently selected item in your inventory
 function actionItem(_key)
-	local item = items[inventorySelected] -- reference to the selected item instance
+	local item = items[ui.inv.selected] -- reference to the selected item instance
 	local action = actionMapping(_key) -- action to be used for the item callback
 
 	if (action ~= nil) then
@@ -379,8 +376,6 @@ end
 
 
 --[[ ------------------------- UI Related ------------------------- ]]--
--- this is purely ui, so maybe we need to bring UI related functions here...
--- such as drawRoom??
 function buildVerbGrid()
 	-- build verb grid for use later and store some helper variables for click detection
 
@@ -408,17 +403,21 @@ function drawVerbs(_item)
 	for i,row in pairs(ui.verb.grid) do
 		for j,col in pairs(row) do
  			
- 			--- required to center text vertically
+ 			--- required to center verb vertically
 			local cy = col.y - (ui.font:getHeight() / 2) + (ui.verb.height / 2)
 			local color = ui.verb.color
 
-			-- change color if the text is highlighted
+			-- change color if the verb is highlighted
 			if (j == ui.verb.selectedX and i == ui.verb.selectedY) then
 				color = ui.verb.selectedColor
 			end
 
 			--love.graphics.rectangle('line', col.x, col.y, ui.verb.width, ui.verb.height)
-			_pf(col.text, col.x, cy, ui.verb.width, "center", color, true)
+			_pf(col.text, col.x, cy, ui.verb.width, "center", color, true) -- draw verb
+
+			-- this could be draw verbs and related items
+			-- draw verb sentence here..............
+			-- Use flashlight
 		end
 	end
 end
@@ -432,6 +431,7 @@ function love.mousepressed(x, y, button)
 	if (gridX >= 1 and gridX <= 3) and (gridY >= 1 and gridY <= 3) then
 		ui.verb.selectedX = gridX
 		ui.verb.selectedY = gridY
+		ui.verb.selected = verbs[gridX][gridY].verb
 	end
 end
 
