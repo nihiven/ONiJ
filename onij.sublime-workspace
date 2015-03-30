@@ -47,7 +47,7 @@
 			"file": "main.lua",
 			"settings":
 			{
-				"buffer_size": 11710,
+				"buffer_size": 13477,
 				"line_ending": "Windows"
 			}
 		},
@@ -55,7 +55,7 @@
 			"file": "items.lua",
 			"settings":
 			{
-				"buffer_size": 1613,
+				"buffer_size": 1762,
 				"line_ending": "Windows",
 				"name": "-- items"
 			}
@@ -72,7 +72,7 @@
 			"file": "todo.txt",
 			"settings":
 			{
-				"buffer_size": 810,
+				"buffer_size": 1328,
 				"line_ending": "Windows"
 			}
 		},
@@ -88,7 +88,7 @@
 			"file": "colors.lua",
 			"settings":
 			{
-				"buffer_size": 5341,
+				"buffer_size": 5387,
 				"line_ending": "Windows"
 			}
 		}
@@ -138,6 +138,8 @@
 	"file_history":
 	[
 		"/E/Google Drive/Code/Game Prototypes/love_test/index.html",
+		"/E/Google Drive/Code/Game Prototypes/love_test/ONiJ/README.md",
+		"/C/Users/nihiven/Desktop/fame/fame.aslx",
 		"/C/Users/nihiven/Desktop/index.html",
 		"/E/Google Drive/Code/Game Prototypes/love_test/ONiJ/lua.conf",
 		"/E/Google Drive/Code/Game Prototypes/love_test/ONiJ/colors.lua",
@@ -187,6 +189,22 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ui.inv",
+			"inventoryColorSelected",
+			"inventoryColorNormal",
+			"inventoryY",
+			"inventoryX",
+			"inventoryShow",
+			"inventorySelected",
+			"inventoryShow",
+			"buildVerbGrid",
+			"getheight",
+			"message",
+			"_pf",
+			"_p(",
+			"messagesColorPeople",
+			"_p(",
+			"people",
 			"color",
 			"ui.msg",
 			"ui.msg.color",
@@ -257,15 +275,15 @@
 					"file": "main.lua",
 					"settings":
 					{
-						"buffer_size": 11710,
+						"buffer_size": 13477,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								600,
-								600
+								1026,
+								1026
 							]
 						],
 						"settings":
@@ -274,7 +292,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1864.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -284,15 +302,15 @@
 					"file": "items.lua",
 					"settings":
 					{
-						"buffer_size": 1613,
+						"buffer_size": 1762,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1533,
-								1533
+								1119,
+								1133
 							]
 						],
 						"settings":
@@ -302,7 +320,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 530.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -339,15 +357,15 @@
 					"file": "todo.txt",
 					"settings":
 					{
-						"buffer_size": 810,
+						"buffer_size": 1328,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3,
-								3
+								1328,
+								1328
 							]
 						],
 						"settings":
@@ -372,8 +390,8 @@
 						"selection":
 						[
 							[
-								510,
-								510
+								622,
+								622
 							]
 						],
 						"settings":
@@ -391,15 +409,15 @@
 					"file": "colors.lua",
 					"settings":
 					{
-						"buffer_size": 5341,
+						"buffer_size": 5387,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1625,
-								1633
+								4687,
+								4687
 							]
 						],
 						"settings":
@@ -407,7 +425,7 @@
 							"syntax": "Packages/Lua/Lua.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 112.0,
+						"translation.y": 2076.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

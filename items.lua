@@ -86,12 +86,43 @@ function iKeys.look(_data)
 end
 
 
+------- test items
+iCigs = 
+{
+	id = "iCigs",
+	img = "iCigs.png",
+	name = "Cigarettes"
+}
+iMolly = 
+{
+	id = "iMolly",
+	img = "iMolly.png",
+	name = "Molly"
+}
+iCash = 
+{
+	id = "iCash",
+	img = "iCash.png",
+	name = "Cash"
+}
+iValetTicket = 
+{
+	id = "iValetTicket",
+	img = "iValetTicket.png",
+	name = "Valet Ticket"
+}
+
+
 -- master item list
 item_list = 
 { 
 	iPhone,
 	iWallet,
-	iKeys
+	iKeys,
+	iCigs,
+	iMolly,
+	iCash,
+	iValetTicket
 }
 
 -- add your phone to the item list, you posess it
