@@ -58,7 +58,7 @@ ui.inv =
 	selected = 1,
 	x = 480,
 	y = 30,
-	maxColumns = 6,
+	maxColumns = 8,
 	color = colorsRGB.yellow,
 	colorSelected = colorsRGB.red
 }

@@ -47,7 +47,7 @@
 			"file": "main.lua",
 			"settings":
 			{
-				"buffer_size": 13477,
+				"buffer_size": 13707,
 				"line_ending": "Windows"
 			}
 		},
@@ -55,7 +55,7 @@
 			"file": "items.lua",
 			"settings":
 			{
-				"buffer_size": 1762,
+				"buffer_size": 2114,
 				"line_ending": "Windows",
 				"name": "-- items"
 			}
@@ -189,6 +189,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"clickInventory",
+			"action",
 			"ui.inv",
 			"inventoryColorSelected",
 			"inventoryColorNormal",
@@ -275,15 +277,15 @@
 					"file": "main.lua",
 					"settings":
 					{
-						"buffer_size": 13477,
+						"buffer_size": 13707,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1026,
-								1026
+								221,
+								221
 							]
 						],
 						"settings":
@@ -292,7 +294,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1864.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -302,15 +304,15 @@
 					"file": "items.lua",
 					"settings":
 					{
-						"buffer_size": 1762,
+						"buffer_size": 2114,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1119,
-								1133
+								1640,
+								1640
 							]
 						],
 						"settings":
@@ -320,7 +322,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 530.0,
+						"translation.y": 540.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -390,8 +392,8 @@
 						"selection":
 						[
 							[
-								622,
-								622
+								124,
+								128
 							]
 						],
 						"settings":

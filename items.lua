@@ -91,27 +91,46 @@ iCigs =
 {
 	id = "iCigs",
 	img = "iCigs.png",
-	name = "Cigarettes"
+	name = "Cigarettes",
+	actions = { look = true }
 }
+function iCigs.look(_data)
+	addMessage({text = "These are your keys."})
+end
+
 iMolly = 
 {
 	id = "iMolly",
 	img = "iMolly.png",
-	name = "Molly"
+	name = "Molly",
+	actions = { look = true }
 }
+function iMolly.look(_data)
+	addMessage({text = "It's some good stuff."})
+end
+
 iCash = 
 {
 	id = "iCash",
 	img = "iCash.png",
-	name = "Cash"
+	name = "Cash",
+	money = 60,
+	actions = { look = true }
 }
+function iCash.look(_data)
+	addMessage({text = "Looks like $60."})
+end
+
 iValetTicket = 
 {
 	id = "iValetTicket",
 	img = "iValetTicket.png",
-	name = "Valet Ticket"
+	name = "Valet Ticket",
+	actions = { look = true }
 }
-
+function iValetTicket.look(_data)
+	addMessage({text = "It's your valet ticket."})
+end
 
 -- master item list
 item_list = 
