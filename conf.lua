@@ -1,7 +1,7 @@
 function love.conf(t)
 	t.console = true                  		-- Attach a console (boolean, Windows only)
-    t.window.width = 1280 					-- window width
-    t.window.height = 720 					-- window height
+    t.window.width = 1920 					-- window width
+    t.window.height = 1080 					-- window height
 	t.window.title = "One Night in Japan"	-- The window title (string)
 	t.window.borderless = false        		-- Remove all border visuals from the window (boolean)
 	t.modules.physics = false          		-- disable the physics module (boolean)

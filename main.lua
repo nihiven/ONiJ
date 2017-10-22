@@ -27,24 +27,20 @@ locations.feria = feria.getLocation()
 ui = { }
 
 -- messages
-ui.msg =
-{
-	sys = 
-	{
+ui.msg = {
+	sys = {
 		padX = 10,
 		padY = 10,
 		width = love.graphics.getWidth() - (10 * 2),
 		color = colorsRGB.red
 	},
-	event = 
-	{
+	event = {
 		color = colorsRGB.white
 	}
 }
 
 -- room
-ui.room = 
-{
+ui.room = {
 	padTop = 30,
 	padBottom = 240,
 	movesX = 80,
@@ -52,8 +48,7 @@ ui.room =
 }
 
 -- inventory
-ui.inv = 
-{
+ui.inv = {
 	show = false,
 	selected = 1,
 	x = 480,
@@ -69,15 +64,14 @@ peopleSelected = 1
 messagesColorPeople = colorsRGB.pink
 
 --[[ ------------------------- Verbs ------------------------- ]]--
---[[ 
+--[[
 	Push	Open	 Talk to
  	Pull	Close	 Pick Up
- 	Give	Look at  Use        
+ 	Give	Look at  Use
 	]]--
 -- this controls how the verb grid is built
 -- we'll build the grid in buildlVerbGrid() and store it in the ui table
-ui.verb = 
-{ 
+ui.verb = {
 	width = 100, -- width per block
 	height = 60, -- height per block
 	color = colorsRGB.white,
@@ -87,11 +81,10 @@ ui.verb =
 	selectedColor = colorsRGB.lime,
 	grid = { } -- contains the grid built by buildVerbGrid()
 }
-verbs = 
-{ 
+verbs = {
 	{
-		{ verb = "push", text = "Push" }, 
-		{ verb = "open", text = "Open"}, 
+		{ verb = "push", text = "Push" },
+		{ verb = "open", text = "Open"},
 		{ verb = "talk", text = "Talk to"}
 	},
 		{
@@ -112,11 +105,10 @@ verbs =
 function love.draw()
 	drawVerbs()
 	printRoomInfo() -- room info
-  	printPeople() -- print people around you
+  printPeople() -- print people around you
 	printMessages() -- message queue
 	printInventory() -- show inventory
 	drawInventory() -- drawing inventory icons
-
 end
 
 -- called on startup
@@ -125,8 +117,7 @@ function love.load()
 	loadImages()
 
 	-- set ui variables for the screen
-	ui.scr = 
-	{
+	ui.scr = {
 		width = love.graphics.getWidth(),
 		midX = love.graphics.getWidth() / 2,
 		height = love.graphics.getHeight(),
@@ -138,10 +129,33 @@ function love.load()
 
 	-- load intial messages
 	-- defined in reverse because earlier messages reference later ones
-	local intro3 = { text = "One Night in Japan",			age = 36, callback = { func = "setLocation",	data = "feria" } }
-	local intro2 = { text = "You can do anything.",			age = 12, callback = { func = "addMessage",		data = intro3 } }
-	local intro1 = { text = "You have one night in Japan.",	age = 12, callback = { func = "addMessage",		data = intro2 } }
-	
+	local intro3 = {
+		text = "One Night in Japan",
+		age = 36,
+		callback = {
+			func = "setLocation",
+			data = "feria"
+		}
+	}
+
+	local intro2 = {
+		text = "You can do anything.",
+		age = 12,
+		callback = {
+			func = "addMessage",
+			data = intro3
+		}
+	}
+
+	local intro1 = {
+		text = "You have one night in Japan.",
+		age = 12,
+		callback = {
+			func = "addMessage",
+			data = intro2
+		}
+	}
+
 	addMessage(intro1)
 end
 
@@ -162,7 +176,7 @@ function love.keypressed(key)
 		navigateRoomItems(key)
 	elseif key == "e" or key == "d" then
 		navigateInventory(key)
-	elseif key == "l" or key == "u" or key == "o" then
+	elseif key == "l" or key == "u" or key == "o" or key == "r" then
 		actionItem(key)
 	end
 end
@@ -170,7 +184,7 @@ end
 
 --[[ ------------------------- My Functions ------------------------- ]]--
 function loadConfig()
-	ui.font = love.graphics.setNewFont("Neon.ttf", 18)	
+	ui.font = love.graphics.setNewFont("Neon.ttf", 18)
 end
 
 
@@ -178,10 +192,11 @@ end
 -- print and age the first message in the queue
 -- once age is 0, the message is removed
 function printMessages()
-	if (#messages == 0) then return end
+	if (#messages == 0) then
+		return
+	end
 
 	local m = messages[1]
-
 	_pf(m.text, ui.msg.sys.padX, ui.msg.sys.padY - 5, ui.msg.sys.width, "left", ui.msg.sys.color, false)
 
 	if (m.age <= 0) then
@@ -194,7 +209,6 @@ function printMessages()
 	else
 	    messages[1].age = m.age - 1
 	end
-
 end
 
 -- add the passed message to the message queue
@@ -224,12 +238,12 @@ function printRoomInfo()
 
 	-- print movement options
 	local m = {}
-	if (r.forward ~= nil) then table.insert(m, "Up: " .. rs[r.forward].name) end 
-	if (r.back ~= nil) then table.insert(m, "Down: " .. rs[r.back].name) end 
-	if (r.left ~= nil) then table.insert(m, "Left: " .. rs[r.left].name) end 
-	if (r.right ~= nil) then table.insert(m, "Right: " .. rs[r.right].name) end 
-	
-	for i = #m,1,-1 do
+	if (r.forward ~= nil) then table.insert(m, "Up: " .. rs[r.forward].name) end
+	if (r.back ~= nil) then table.insert(m, "Down: " .. rs[r.back].name) end
+	if (r.left ~= nil) then table.insert(m, "Left: " .. rs[r.left].name) end
+	if (r.right ~= nil) then table.insert(m, "Right: " .. rs[r.right].name) end
+
+	for i = #m, 1, -1 do
 		_pf(m[i],0,ui.room.movesX+i*20, ui.scr.width, "center", ui.msg.event.color, true)
 	end
 end
@@ -241,13 +255,21 @@ function processMovement(_key)
 	local n = nil
 
 	if _key == "up" then
-		if (r.forward ~= nil) 	then n = r.forward end 
-	elseif _key == "down" then 
-		if (r.back ~= nil) 		then n = r.back end 
-	elseif _key == "left" then 
-		if (r.left ~= nil) 		then n = r.left end
+		if (r.forward ~= nil) then
+			n = r.forward
+		end
+	elseif _key == "down" then
+		if (r.back ~= nil) then
+			n = r.back
+		end
+	elseif _key == "left" then
+		if (r.left ~= nil) then
+			n = r.left
+		end
 	elseif _key == "right" then
-		if (r.right ~= nil) 	then n = r.right end
+		if (r.right ~= nil) then
+			n = r.right
+		end
 	end
 
 	if (n ~= nil) then enterRoom(n) end
@@ -301,7 +323,7 @@ function printInventory()
 				-- this item isn't select, use the normal color
 				_p(": " .. value.name, ui.inv.x, ui.inv.y + (key * 20) + (i * 20), ui.inv.color, true)
 			end
-			
+
 		end
 	else
 		_p("Inventory" .. " (" .. #items .. ")", ui.inv.x - 10, ui.inv.y, ui.inv.color, true)
@@ -311,9 +333,14 @@ end
 
 function loadImages()
 	-- for each image load its iName.png
-	for key,value in pairs(items) do
-		images[value.id] = love.graphics.newImage(value.img)
+	print("\nloadImages()")
+	for key,item in pairs(items) do
+		if (item.imgList ~= nil) then
+			print(string.format(" %s %s %s", item.desc, item.state, item:img()))
+			images[item:img()] = love.graphics.newImage(item:img())
+		end
 	end
+	print("Done: loadImages()")
 end
 
 -- replaces printInventory()
@@ -329,10 +356,10 @@ function drawInventory()
 	for key,value in pairs(items) do
 		if (key == ui.inv.selected) then
 			-- if this is the selected item use a special color: ui.inv.colorSelected
-			love.graphics.draw(images[value.id], x, y)
+			love.graphics.draw(images[value:img()], x, y)
 		else
 			-- this item isn't select, use the normal color
-			love.graphics.draw(images[value.id], x, y)
+			love.graphics.draw(images[value:img()], x, y)
 		end
 		x = x + 100
 	end
@@ -356,7 +383,7 @@ end
 
 function addToInventory(_item)
 	addMessage({text = "Added " .. _item.name .. " to your inventory."})
-	images[_item.id] = love.graphics.newImage(_item.img)
+	images[_item.id] = love.graphics.newImage(_item.img())
 	table.insert(items, _item)
 end
 
@@ -388,6 +415,8 @@ function actionMapping(_key)
 		r = "look"
 	elseif (_key == "o") then
 		r = "open"
+	elseif (_key == "r") then
+		r = "roll"
 	else
 		r = nil
 	end
@@ -400,7 +429,7 @@ end
 -- list the people in the current room
 function printPeople()
 	if (location == nil) then return end
-	
+
 	local p = getPeople()
 	if (p == nil) then return end
 
@@ -420,7 +449,7 @@ function buildVerbGrid()
 		local r = { }
 
 		for j = 1,#verbs[i],1 do -- column
-			r[j] = 
+			r[j] =
 			{
 				verb = verbs[j][i].verb,
 				text = verbs[j][i].text,
@@ -439,7 +468,7 @@ end
 function drawVerbs(_item)
 	for i,row in pairs(ui.verb.grid) do
 		for j,col in pairs(row) do
- 			
+
  			--- required to center verb vertically
 			local cy = col.y - (ui.font:getHeight() / 2) + (ui.verb.height / 2)
 			local color = ui.verb.color
@@ -487,7 +516,7 @@ end
 
 ------------- HELPERS
 function _p(_text, _x, _y, _color, _shadow)
-	if (_shadow == true) then 
+	if (_shadow == true) then
 		_sc(colorsRGB.darkshadow)
 		love.graphics.print(_text, _x+1, _y+1)
 	end
@@ -497,7 +526,7 @@ function _p(_text, _x, _y, _color, _shadow)
 end
 
 function _pf(_text, _x, _y, _w, _align, _color, _shadow)
-	if (_shadow == true) then 
+	if (_shadow == true) then
 		_sc(colorsRGB.darkshadow)
 		love.graphics.printf(_text, _x+1, _y+1, _w, _align)
 	end
