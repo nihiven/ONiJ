@@ -15,7 +15,6 @@ iOxy = Item:new{
 iOxy:setImg{state="base", file="iOxy.png"}
 
 
-
 ---- define your phone
 iPhone = {
 	id = "iPhone",
